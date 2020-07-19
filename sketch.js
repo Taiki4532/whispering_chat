@@ -1,4 +1,5 @@
 var capture;
+var theirVideo;
 var w = 640;
 var h = 512;
 var button;
@@ -87,8 +88,18 @@ function setup() {
 // });
 }
 
+function addVideo(call){
+  call.on("stream",(theirStream) => {
+    console.log('stream!');
+    theirVideo = createVideo();
+    theirVideo.elt.autoPlay = true;
+    theirVideo.elt.srcObject = theirStream;
+    theirVideo.hide();
+  })
+}
 
 function draw() { 
   background(0);
   ellipse(w/2,h/2,100,100);
 }
+
