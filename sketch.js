@@ -94,6 +94,8 @@ function addVideo(call){
     theirVideo = createVideo();
     theirVideo.elt.autoPlay = true;
     theirVideo.elt.srcObject = theirStream;
+    theirVideo.size(160, 120);
+    theirVideo.play();
     theirVideo.hide();
   })
 }
