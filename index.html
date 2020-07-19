@@ -11,15 +11,15 @@
 </head>
 
 <body>
-<!-- <script src = "sketch.js"></script> -->
 
-  <video id="my-video" width="400px" autoplay　muted playsinline></video>
+  <video id="my-video" autoplay　muted playsinline></video>
   <p id="my-id"></p>
   <textarea id="their-id"></textarea>
   <button id="make-call">発信</button>
-  <video id="their-video" width="400px" autoplay playsinline></video>
-  
-  <script>
+  <video id="their-video" autoplay playsinline></video>
+  <script src = "sketch.js"></script>
+
+  <!-- <script>
     let localStream;
   
     // カメラ映像取得
@@ -67,7 +67,7 @@ peer.on('call', mediaConnection => {
   mediaConnection.answer(localStream);
   setEventListener(mediaConnection);
 });
-  </script>
+  </script> -->
 
 </body>
 </html>
