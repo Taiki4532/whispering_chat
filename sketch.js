@@ -39,6 +39,7 @@ function setup() {
       }
     }
     const call = peer.call(callId, capture.elt.srcObject,options); 
+    addVideo(call);
   });
  //button.position(w/2,h/2);
 
@@ -51,8 +52,7 @@ function setup() {
     }
   }
   call.answer(capture.elt.srcObject,options); //呼び出し相手に対して返す
-  var audioElm = createAudio(call);
-  audioElm.play();
+  addVideo(call);
 });
 // let localStream = capture;
 
