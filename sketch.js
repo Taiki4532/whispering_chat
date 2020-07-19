@@ -1,19 +1,20 @@
 var capture;
-var w = 1280;
-var h = 1024;
+var w = 640;
+var h = 512;
 var button;
 var inp;
 var myId;
 
 function setup() {
-  createCanvas(1280,1024);
-
+  createCanvas(640,480);
   capture = createCapture({
     audio: true,
-    video: false
+    video: {
+      width:320,height:240
+    }
   });
   capture.elt.setAttribute('autoplay','playsinline', '');
-  capture.size(160, 120);
+  capture.size(260, 120);
   capture.hide();
 
   let peer = new Peer({
@@ -24,26 +25,35 @@ function setup() {
     console.log("open! id=" + peer.id);
     createP("Your id: " + peer.id);
 });
+
  inp = createInput('');
   //inp.position(w/2,h/3);
 
   button = createButton("call").mousePressed(() => {
-    // ボタンが押されたら
-    const callId = inp.value(); //id入力欄の値を取得
+    const callId = inp.value(); 
     console.log("call! id=" + peer.id);
-    const call = peer.call(callId, capture.elt.srcObject); 
-
+    var options = {
+      'constraints': {
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: false
+      }
+    }
+    const call = peer.call(callId, capture.elt.srcObject,options); 
   });
  //button.position(w/2,h/2);
- peer.on("call", (call) => {
+
+ peer.on("call", (call)  => {
   console.log("be called!");
-  call.answer(capture.elt.srcObject); //呼び出し相手に対して返す
-  var audioElm;
-  audioElm.srcObject = call;
+  var options = {
+    'constraints': {
+      offerToReceiveAudio: true,
+      offerToReceiveVideo: false
+    }
+  }
+  call.answer(capture.elt.srcObject,options); //呼び出し相手に対して返す
+  var audioElm = createAudio(call);
   audioElm.play();
 });
-}
-
 // let localStream = capture;
 
 //    const peer = new Peer({      
@@ -75,6 +85,8 @@ function setup() {
 //   mediaConnection.answer(localStream);
 //   setEventListener(mediaConnection);
 // });
+}
+
 
 function draw() { 
   background(0);
