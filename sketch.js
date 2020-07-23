@@ -1,7 +1,12 @@
-let localStream;
-  
+let localStream = null;
+let peer = null;
+let existingCall = null;
+let constraints = {
+  video:false,
+  audio:true
+};
     // カメラ映像取得
-    navigator.mediaDevices.getUserMedia({video: false, audio: true})
+    navigator.mediaDevices.getUserMedia(constraints)
       .then( stream => {
       // 成功時にvideo要素にカメラ映像をセットし、再生
       const videoElm = document.getElementById('my-video')
@@ -15,7 +20,7 @@ let localStream;
       return;
     });
 
-    const peer = new Peer({
+    peer = new Peer({
     key: 'db12c4f5-2b65-411c-8e39-cd36386150cf',
     debug: 3
     });
