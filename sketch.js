@@ -38,7 +38,7 @@ let constraints = {
   }
 }
   const mediaConnection = peer.call(theirID, localStream,{
-    audioReceiveEnabled: true,
+    videoReceiveEnabled: true,
   });
   setEventListener(mediaConnection);
 };
