@@ -9,9 +9,9 @@ let constraints = {
     navigator.mediaDevices.getUserMedia(constraints)
       .then( stream => {
       // 成功時にvideo要素にカメラ映像をセットし、再生
-      const videoElm = document.getElementById('my-video')
-      videoElm.srcObject = stream;
-      videoElm.play();
+      // const videoElm = document.getElementById('my-video')
+      // videoElm.srcObject = stream;
+      // videoElm.play();
       // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
       localStream = stream;
     }).catch( error => {
@@ -57,6 +57,8 @@ var w = 640;
 var h = 512;
 var button;
 var button2;
+var button3;
+var button4;
 var inp;
 var myId;
 
@@ -155,13 +157,28 @@ function addVideo(call){
     theirVideo.play();
     theirVideo.hide();
   })*/
-  button = createButton('click me');
-  button.position(19, 19);
+
+
+
+  //相手の音声をミュート、アンミュート
+  button = createButton('click m');
+  button.position(20, 20);
   button.mousePressed(changeBG);
 
-  button = createButton('click m');
-  button.position(19, 25);
-  button.mousePressed(changeBG2);
+  button2 = createButton('click um');
+  button2.position(20, 50);
+  button2.mousePressed(changeBG2);
+
+  //自分の音声をミュート、アンミュート
+  button3 = createButton('click m');
+  button3.position(100, 20);
+  button3.mousePressed(changeBG3);
+
+  button4 = createButton('click um');
+  button4.position(100, 50);
+  button4.mousePressed(changeBG4);
+
+
 }
 
 function draw() { 
@@ -176,5 +193,13 @@ function changeBG() {
 
 function changeBG2() {
   let video = document.getElementById('their-video');
+  video.muted = false;
+}
+
+function changeBG3() {
+  localStream.muted = true;
+}
+
+function changeBG4() {
   video.muted = false;
 }
