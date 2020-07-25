@@ -1,6 +1,5 @@
 let localStream = null;
 let peer = null;
-let existingCall = null;
 let constraints = {
   video:false,
   audio:true
@@ -197,9 +196,9 @@ function changeBG2() {
 }
 
 function changeBG3() {
-  localStream.muted = true;
+  localStream.getAudioTracks()[0].enabled = false;
 }
 
 function changeBG4() {
-  video.muted = false;
+  localStream.getAudioTracks()[0].enabled = true;
 }
