@@ -56,6 +56,7 @@ var theirVideo;
 var w = 640;
 var h = 512;
 var button;
+var button2;
 var inp;
 var myId;
 
@@ -157,6 +158,10 @@ function addVideo(call){
   button = createButton('click me');
   button.position(19, 19);
   button.mousePressed(changeBG);
+
+  button = createButton('click m');
+  button.position(19, 25);
+  button.mousePressed(changeBG2);
 }
 
 function draw() { 
@@ -167,4 +172,9 @@ function draw() {
 function changeBG() {
   let video = document.getElementById('their-video');
   video.muted = true;
+}
+
+function changeBG2() {
+  let video = document.getElementById('their-video');
+  video.muted = false;
 }
