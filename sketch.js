@@ -1,7 +1,7 @@
 let localStream = null;
 let peer = null;
 let constraints = {
-  video:false,
+  video:true,
   audio:true
 };
     // カメラ映像取得
@@ -30,14 +30,19 @@ let constraints = {
 
   document.getElementById("make-call").onclick = () => {
   const theirID = document.getElementById('their-id').value;
-  const mediaConnection = peer.call(theirID, localStream);
+  var options = { 'constraints' : {
+    'offerToReceiveAudio' : true,
+    'offerToReceiveVideo' : false
+  }
+}
+  const mediaConnection = peer.call(theirID, localStream,options);
   setEventListener(mediaConnection);
 };
 
 // イベントリスナを設置する関数
 const setEventListener = mediaConnection => {
   mediaConnection.on('stream', stream => {
-    // video要素にカメラ映像をセットして再生
+
     const videoElm = document.getElementById('their-video');
     videoElm.srcObject = stream;
     videoElm.play();
