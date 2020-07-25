@@ -39,7 +39,7 @@ let constraints = {
 const setEventListener = mediaConnection => {
   mediaConnection.on('stream', stream => {
     // video要素にカメラ映像をセットして再生
-    const videoElm = document.getElementById('their-video')
+    const videoElm = document.getElementById('their-video');
     videoElm.srcObject = stream;
     videoElm.play();
   });
@@ -154,6 +154,9 @@ function addVideo(call){
     theirVideo.play();
     theirVideo.hide();
   })*/
+  button = createButton('click me');
+  button.position(19, 19);
+  button.mousePressed(changeBG);
 }
 
 function draw() { 
@@ -161,3 +164,7 @@ function draw() {
   ellipse(w/2,h/2,100,100);
 }
 
+function changeBG() {
+  let video = document.getElementById('their-video');
+  video.muted = true;
+}
