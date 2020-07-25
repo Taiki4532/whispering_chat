@@ -37,7 +37,9 @@ let constraints = {
     }
   }
 }
-  const mediaConnection = peer.call(theirID, localStream,options);
+  const mediaConnection = peer.call(theirID, localStream,{
+    audioReceiveEnabled: true,
+  });
   setEventListener(mediaConnection);
 };
 
@@ -224,15 +226,15 @@ function draw() {
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
     let video = document.getElementById('their-video');
-    video.muted = false;
+    video.muted = true;
   }else if(label == "Listening"){
     let video = document.getElementById('their-video');
-    video.muted = true;
+    video.muted = false;
     localStream.getAudioTracks()[0].enabled = false;
   }else if(label == "None"){
     localStream.getAudioTracks()[0].enabled = false;
     let video = document.getElementById('their-video');
-    video.muted = false;
+    video.muted = true;
   }
 }
 
