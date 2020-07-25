@@ -29,7 +29,7 @@ let constraints = {
     document.getElementById('my-id').textContent = peer.id;
   });
 
-  document.getElementById('make-call').onclick = () => {
+  document.getElementById("make-call").onclick = () => {
   const theirID = document.getElementById('their-id').value;
   const mediaConnection = peer.call(theirID, localStream);
   setEventListener(mediaConnection);
