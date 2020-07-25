@@ -37,9 +37,12 @@ let constraints = {
     }
   }
 }
-  const mediaConnection = peer.call(theirID, localStream,{
-    videoReceiveEnabled: true,
-  });
+  const mediaConnection = peer.call(theirID, localStream
+  //   ,{
+  //   videoReceiveEnabled: true,
+  //   audioReceiveEnabled: false,
+  // }
+  );
   setEventListener(mediaConnection);
 };
 
