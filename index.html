@@ -1,38 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Whispering_Chat</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1 class="heading">Room example</h1>
-      <p class="note">
-        Change Room mode (before join in a room):
-        <a href="#">mesh</a> / <a href="#sfu">sfu</a>
-      </p>
-      <div class="room">
-        <div>
-          <video id="js-local-stream"></video>
-          <span id="js-room-mode"></span>:
-          <input type="text" placeholder="Room Name" id="js-room-id">
-          <button id="js-join-trigger">Join</button>
-          <button id="js-leave-trigger">Leave</button>
-        </div>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="p5.js"></script>
+  <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+  <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Whispering_chat</title>
+</head>
 
-        <div class="remote-streams" id="js-remote-streams"></div>
+<body>
 
-        <div>
-          <pre class="messages" id="js-messages"></pre>
-          <input type="text" id="js-local-text">
-          <button id="js-send-trigger">Send</button>
-        </div>
-      </div>
-      <p class="meta" id="js-meta"></p>
-    </div>
-    <script src="//cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
-    <script src="sketch.js"></script>
-  </body>
+  <video id="my-video" autoplay　muted playsinline></video>
+  <p id="my-id"></p>
+  <textarea id="their-id"></textarea>
+  <button id="make-call">発信</button>
+  <video id="their-video" autoplay playsinline></video>
+
+  <script src = "sketch.js"></script>
+<!-- 
+  <script>
+    let localStream;
+  
+    // カメラ映像取得
+    navigator.mediaDevices.getUserMedia({video: false, audio: true})
+      .then( stream => {
+      // 成功時にvideo要素にカメラ映像をセットし、再生
+      const videoElm = document.getElementById('my-video')
+      videoElm.srcObject = stream;
+      videoElm.play();
+      // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+      localStream = stream;
+    }).catch( error => {
+      // 失敗時にはエラーログを出力
+      console.error('mediaDevice.getUserMedia() error:', error);
+      return;
+    });
+
+    const peer = new Peer({
+    key: 'db12c4f5-2b65-411c-8e39-cd36386150cf',
+    debug: 3
+    });
+
+  peer.on('open', () => {
+    document.getElementById('my-id').textContent = peer.id;
+  });
+
+  document.getElementById('make-call').onclick = () => {
+  const theirID = document.getElementById('their-id').value;
+  const mediaConnection = peer.call(theirID, localStream);
+  setEventListener(mediaConnection);
+};
+
+// イベントリスナを設置する関数
+const setEventListener = mediaConnection => {
+  mediaConnection.on('stream', stream => {
+    // video要素にカメラ映像をセットして再生
+    const videoElm = document.getElementById('their-video')
+    videoElm.srcObject = stream;
+    videoElm.play();
+  });
+}
+
+//着信処理
+peer.on('call', mediaConnection => {
+  mediaConnection.answer(localStream);
+  setEventListener(mediaConnection);
+});
+  </script> -->
+
+</body>
 </html>
