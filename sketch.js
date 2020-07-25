@@ -31,8 +31,10 @@ let constraints = {
   document.getElementById("make-call").onclick = () => {
   const theirID = document.getElementById('their-id').value;
   var options = { 'constraints' : {
+    'mandatory' : {
     'offerToReceiveAudio' : true,
     'offerToReceiveVideo' : false
+    }
   }
 }
   const mediaConnection = peer.call(theirID, localStream,options);
@@ -221,9 +223,12 @@ function draw() {
 
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
+    let video = document.getElementById('their-video');
+    video.muted = false;
   }else if(label == "Listening"){
     let video = document.getElementById('their-video');
     video.muted = true;
+    localStream.getAudioTracks()[0].enabled = false;
   }else if(label == "None"){
     localStream.getAudioTracks()[0].enabled = false;
     let video = document.getElementById('their-video');
