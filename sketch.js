@@ -1,18 +1,15 @@
 let localStream = null;
 let peer = null;
 let peerId;
-var idList = [];
 var connected = false;
 let constraints = {
   video:true,
   audio:true
 };
-    // カメラ映像取得
     navigator.mediaDevices.getUserMedia(constraints)
       .then( stream => {
       localStream = stream;
     }).catch( error => {
-      // 失敗時にはエラーログを出力
       console.error('mediaDevice.getUserMedia() error:', error);
       return;
     });
@@ -29,6 +26,10 @@ let constraints = {
   });
 
 function callOthers(){
+if(!peer.open){
+  return;
+}
+
     const theirID = IDinput.value();
     var options = { 'constraints' : {
       'mandatory' : {
@@ -37,8 +38,8 @@ function callOthers(){
       }
     }
   }
-    const mediaConnection = peer.call(theirID, localStream
-    );
+    const mediaConnection = peer.call(theirID, localStream);
+
     setEventListener(mediaConnection);
   };
 
@@ -55,8 +56,8 @@ function callOthers(){
 //   );
 //   setEventListener(mediaConnection);
 // };
-
 // イベントリスナを設置する関数
+
 const setEventListener = mediaConnection => {
   mediaConnection.on('stream', stream => {
     const videoElm = document.getElementById('their-video');
@@ -74,11 +75,13 @@ peer.on('call', mediaConnection => {
   setEventListener(mediaConnection);
 });
 
-peer.on('close',() =>{
-  connected = false;
-  myId.show();
-  IDinput.show();
-  startButton.show();
+peer.on('connection',dataConnection =>{
+  dataConnection.once('open', async () => {});
+
+  dataConnection.on('data',data => {
+    theirLabel = data;
+  });
+
 });
 
 var capture;
@@ -87,6 +90,7 @@ var h = 512;
 var IDinput;
 var myId;
 var startButton;
+var theirLabel;
 
 let classifier;
 // Model URL
@@ -129,25 +133,41 @@ function draw() {
     drawTitle();
   }else if(connected){
 
+  textFont('Open Sans');
   fill(255);
   textSize(16);
   textAlign(CENTER,BOTTOM);
-  text(label, width / 2, height);
+  text("Your Condition" +"\n"+ label, width / 2, height*15/16);
 
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
     let video = document.getElementById('their-video');
     video.muted = true;
   }else if(label == "Listening"){
+    localStream.getAudioTracks()[0].enabled = false;
     let video = document.getElementById('their-video');
     video.muted = false;
-    localStream.getAudioTracks()[0].enabled = false;
   }else if(label == "None"){
     localStream.getAudioTracks()[0].enabled = false;
     let video = document.getElementById('their-video');
     video.muted = true;
   }
+
   
+  if(theirLabel == "whispering"){
+    textFont('Open Sans');
+    fill(255);
+    textSize(160);
+    textAlign(CENTER,CENTER);
+    text("👄",width/2,height/2);
+  }else if(theirLabel == "Listening"){
+    textFont('Open Sans');
+    fill(255);
+    textSize(160);
+    textAlign(CENTER,CENTER);
+    text("👂",width/2,height/2);
+  }
+
 }
 
 // peer.on('disconnected',id =>{
