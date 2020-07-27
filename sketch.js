@@ -1,5 +1,6 @@
 let localStream = null;
 let peer = null;
+let peerId;
 var idList = [];
 let constraints = {
   video:true,
@@ -8,11 +9,6 @@ let constraints = {
     // カメラ映像取得
     navigator.mediaDevices.getUserMedia(constraints)
       .then( stream => {
-      // 成功時にvideo要素にカメラ映像をセットし、再生
-      // const videoElm = document.getElementById('my-video')
-      // videoElm.srcObject = stream;
-      // videoElm.play();
-      // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
       localStream = stream;
     }).catch( error => {
       // 失敗時にはエラーログを出力
@@ -26,34 +22,45 @@ let constraints = {
     });
 
   peer.on('open', () => {
-    document.getElementById('my-id').textContent = peer.id;
+    peerId = peer.id;
   });
 
-  document.getElementById("make-call").onclick = () => {
-  const theirID = document.getElementById('their-id').value;
-  var options = { 'constraints' : {
-    'mandatory' : {
-    'offerToReceiveAudio' : true,
-    'offerToReceiveVideo' : false
+function callOthers(){
+    const theirID = IDinput.value;
+    var options = { 'constraints' : {
+      'mandatory' : {
+      'offerToReceiveAudio' : true,
+      'offerToReceiveVideo' : false
+      }
     }
   }
-}
-  const mediaConnection = peer.call(theirID, localStream
+    const mediaConnection = peer.call(theirID, localStream
+    );
+    setEventListener(mediaConnection);
+  };
 
-  );
-  setEventListener(mediaConnection);
-};
+//   document.getElementById("make-call").onclick = () => {
+//   const theirID = document.getElementById('their-id').value;
+//   var options = { 'constraints' : {
+//     'mandatory' : {
+//     'offerToReceiveAudio' : true,
+//     'offerToReceiveVideo' : false
+//     }
+//   }
+// }
+//   const mediaConnection = peer.call(theirID, localStream
+//   );
+//   setEventListener(mediaConnection);
+// };
 
 // イベントリスナを設置する関数
 const setEventListener = mediaConnection => {
   mediaConnection.on('stream', stream => {
-
     const videoElm = document.getElementById('their-video');
     videoElm.srcObject = stream;
     videoElm.play();
   });
 }
-
 //着信処理
 peer.on('call', mediaConnection => {
   mediaConnection.answer(localStream);
@@ -61,17 +68,11 @@ peer.on('call', mediaConnection => {
 });
 
 var capture;
-var theirVideo;
 var w = 640;
 var h = 512;
-var button;
-var button2;
-var button3;
-var button4;
-var sendButton5;
-var textTheirId;
-var inp;
+var IDinput;
 var myId;
+var startButton;
 
 let classifier;
 // Model URL
@@ -89,7 +90,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(320, 260);
+  createCanvas(windowWidth, windowHeight);
   // Create the video
   video = createCapture(VIDEO);
   video.size(320, 240);
@@ -99,31 +100,45 @@ function setup() {
   // Start classifying
   classifyVideo();
 
-  //相手の音声をミュート、アンミュート
-  button = createButton('click m');
-  button.position(20, 20);
-  button.mousePressed(changeBG);
+  IDinput = createInput();
+  IDinput.position(width*5/8,height*21/32);
 
-  button2 = createButton('click um');
-  button2.position(20, 50);
-  button2.mousePressed(changeBG2);
+  myId = createInput();
+  myId.position(width*5/8,height/2);
 
-  //自分の音声をミュート、アンミュート
-  button3 = createButton('click m');
-  button3.position(100, 20);
-  button3.mousePressed(changeBG3);
 
-  button4 = createButton('click um');
-  button4.position(100, 50);
-  button4.mousePressed(changeBG4);
-
-  textTheirId = createInput('ID');
+  startButton = createButton('Start');
+  startButton.position(width*5/8,height*7/8)
+  startButton.mousePressed(callOthers);
 }
 
 function draw() { 
-  background(0);
+  background(20);
+  textFont('Open Sans');
+  fill(255);
+  textSize(80);
+  textAlign(CENTER,TOP);
+  text("👄 whispering chat 👂",width/2,height/16);
+
+  textFont('Open Sans');
+  fill(255);
+  textSize(40);
+  textAlign(CENTER,TOP);
+  text("はじめかた",width/2,height/4);
+
+  fill(255);
+  textSize(30);
+  textAlign(LEFT,TOP);
+  text("①自分のIDを確認　→",width/8,height/2);
+  
+  myId = peerId;
+
+  text("②通信相手とIDを交換して\n　テキストボックスに記入　→",width/8,height*5/8);
+
+  text("②ボタンを押して通話開始　→",width/8,height*7/8);
+
   // Draw the video
-  image(flippedVideo, 0, 0);
+  //image(flippedVideo, 0, 0);
 
   // Draw the label
   fill(255);
@@ -131,6 +146,7 @@ function draw() {
   textAlign(CENTER);
   text(label, width / 2, height - 4);
 
+  /*
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
     let video = document.getElementById('their-video');
@@ -144,24 +160,7 @@ function draw() {
     let video = document.getElementById('their-video');
     video.muted = true;
   }
-}
-
-function changeBG() {
-  let video = document.getElementById('their-video');
-  video.muted = true;
-}
-
-function changeBG2() {
-  let video = document.getElementById('their-video');
-  video.muted = false;
-}
-
-function changeBG3() {
-  localStream.getAudioTracks()[0].enabled = false;
-}
-
-function changeBG4() {
-  localStream.getAudioTracks()[0].enabled = true;
+  */
 }
 
 // Get a prediction for the current video frame
@@ -182,4 +181,8 @@ function gotResult(error, results) {
   label = results[0].label;
   // Classifiy again!
   classifyVideo();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

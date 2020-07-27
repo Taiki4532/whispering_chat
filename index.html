@@ -6,69 +6,16 @@
   <script src="p5.js"></script>
   <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
   <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js" type="text/javascript"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>Whispering_chat</title>
 </head>
 
 <body>
   
-
   <audio id="my-video" autoplay　muted playsinline></audio>
-  <p id="my-id"></p>
-  <textarea id="their-id"></textarea>
-  <button id="make-call">発信</button>
   <audio id="their-video" autoplay playsinline></audio>
   <script src = "sketch.js"></script> 
-<!-- 
-  <script>
-    let localStream;
-  
-    // カメラ映像取得
-    navigator.mediaDevices.getUserMedia({video: false, audio: true})
-      .then( stream => {
-      // 成功時にvideo要素にカメラ映像をセットし、再生
-      const videoElm = document.getElementById('my-video')
-      videoElm.srcObject = stream;
-      videoElm.play();
-      // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
-      localStream = stream;
-    }).catch( error => {
-      // 失敗時にはエラーログを出力
-      console.error('mediaDevice.getUserMedia() error:', error);
-      return;
-    });
-
-    const peer = new Peer({
-    key: 'db12c4f5-2b65-411c-8e39-cd36386150cf',
-    debug: 3
-    });
-
-  peer.on('open', () => {
-    document.getElementById('my-id').textContent = peer.id;
-  });
-
-  document.getElementById('make-call').onclick = () => {
-  const theirID = document.getElementById('their-id').value;
-  const mediaConnection = peer.call(theirID, localStream);
-  setEventListener(mediaConnection);
-};
-
-// イベントリスナを設置する関数
-const setEventListener = mediaConnection => {
-  mediaConnection.on('stream', stream => {
-    // video要素にカメラ映像をセットして再生
-    const videoElm = document.getElementById('their-video')
-    videoElm.srcObject = stream;
-    videoElm.play();
-  });
-}
-
-//着信処理
-peer.on('call', mediaConnection => {
-  mediaConnection.answer(localStream);
-  setEventListener(mediaConnection);
-});
-  </script> -->
 
 </body>
 </html>
