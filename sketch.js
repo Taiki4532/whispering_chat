@@ -142,7 +142,7 @@ function draw() {
   textAlign(CENTER,BOTTOM);
   text(label, width / 2, height);
 
-  /*
+  
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
     let video = document.getElementById('their-video');
@@ -156,7 +156,7 @@ function draw() {
     let video = document.getElementById('their-video');
     video.muted = true;
   }
-  */
+  
 }
 
 // Get a prediction for the current video frame
