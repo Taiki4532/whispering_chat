@@ -23,6 +23,8 @@ let constraints = {
 
   peer.on('open', () => {
     peerId = peer.id;
+    myId = createInput(peerId);
+    myId.position(width*5/8,height/2);
   });
 
 function callOthers(){
@@ -103,10 +105,6 @@ function setup() {
   IDinput = createInput();
   IDinput.position(width*5/8,height*21/32);
 
-  myId = createInput();
-  myId.position(width*5/8,height/2);
-
-
   startButton = createButton('Start');
   startButton.position(width*5/8,height*7/8)
   startButton.mousePressed(callOthers);
@@ -130,8 +128,6 @@ function draw() {
   textSize(30);
   textAlign(LEFT,TOP);
   text("①自分のIDを確認　→",width/8,height/2);
-  
-  myId = peerId;
 
   text("②通信相手とIDを交換して\n　テキストボックスに記入　→",width/8,height*5/8);
 
