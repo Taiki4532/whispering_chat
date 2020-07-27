@@ -140,7 +140,7 @@ function draw() {
   fill(255);
   textSize(16);
   textAlign(CENTER);
-  text(label, width / 2, height - 4);
+  text(label, width / 2, height - 50);
 
   /*
   if(label == "whispering"){
