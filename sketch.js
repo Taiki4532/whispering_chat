@@ -106,7 +106,7 @@ function setup() {
   IDinput.position(width*5/8,height*21/32);
 
   startButton = createButton('Start');
-  startButton.position(width*5/8,height*7/8)
+  startButton.position(width*5/8,height*13/16)
   startButton.mousePressed(callOthers);
 }
 
@@ -131,7 +131,7 @@ function draw() {
 
   text("②通信相手とIDを交換して\n　テキストボックスに記入　→",width/8,height*5/8);
 
-  text("②ボタンを押して通話開始　→",width/8,height*7/8);
+  text("③ボタンを押して通話開始　→",width/8,height*13/16);
 
   // Draw the video
   //image(flippedVideo, 0, 0);
@@ -139,8 +139,8 @@ function draw() {
   // Draw the label
   fill(255);
   textSize(16);
-  textAlign(CENTER);
-  text(label, width / 2, height*13/16);
+  textAlign(CENTER,BOTTOM);
+  text(label, width / 2, height);
 
   /*
   if(label == "whispering"){
