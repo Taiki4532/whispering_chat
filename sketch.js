@@ -2,6 +2,7 @@ let localStream = null;
 let peer = null;
 let peerId;
 var idList = [];
+var connected = false;
 let constraints = {
   video:true,
   audio:true
@@ -61,12 +62,23 @@ const setEventListener = mediaConnection => {
     const videoElm = document.getElementById('their-video');
     videoElm.srcObject = stream;
     videoElm.play();
+    connected = true;
+    myId.hide();
+    IDinput.hide();
+    startButton.hide();
   });
 }
 //着信処理
 peer.on('call', mediaConnection => {
   mediaConnection.answer(localStream);
   setEventListener(mediaConnection);
+});
+
+peer.on('close',() =>{
+  connected = false;
+  myId.show();
+  IDinput.show();
+  startButton.show();
 });
 
 var capture;
@@ -112,37 +124,16 @@ function setup() {
 
 function draw() { 
   background(20);
-  textFont('Open Sans');
-  fill(255);
-  textSize(80);
-  textAlign(CENTER,TOP);
-  text("👄 whispering chat 👂",width/2,height/16);
+  
+  if(connected == false){
+    drawTitle();
+  }else if(connected){
 
-  textFont('Open Sans');
-  fill(255);
-  textSize(40);
-  textAlign(CENTER,TOP);
-  text("はじめかた",width/2,height/4);
-
-  fill(255);
-  textSize(30);
-  textAlign(LEFT,TOP);
-  text("①自分のIDを確認　→",width/8,height/2);
-
-  text("②通信相手とIDを交換して\n　テキストボックスに記入　→",width/8,height*5/8);
-
-  text("③ボタンを押して通話開始　→",width/8,height*13/16);
-
-  // Draw the video
-  //image(flippedVideo, 0, 0);
-
-  // Draw the label
   fill(255);
   textSize(16);
   textAlign(CENTER,BOTTOM);
   text(label, width / 2, height);
 
-  
   if(label == "whispering"){
     localStream.getAudioTracks()[0].enabled = true;
     let video = document.getElementById('their-video');
@@ -157,6 +148,15 @@ function draw() {
     video.muted = true;
   }
   
+}
+
+// peer.on('disconnected',id =>{
+//   connected = false;
+//   myId.show();
+//   IDinput.show();
+//   startButton.show();
+// });
+
 }
 
 // Get a prediction for the current video frame
@@ -181,4 +181,27 @@ function gotResult(error, results) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function drawTitle(){
+  textFont('Open Sans');
+  fill(255);
+  textSize(80);
+  textAlign(CENTER,TOP);
+  text("👄 whispering chat 👂",width/2,height/16);
+
+  textFont('Open Sans');
+  fill(255);
+  textSize(40);
+  textAlign(CENTER,TOP);
+  text("はじめかた",width/2,height/4);
+
+  fill(255);
+  textSize(30);
+  textAlign(LEFT,TOP);
+  text("①自分のIDを確認　→",width/8,height/2);
+
+  text("②通信相手とIDを交換して\n　テキストボックスに記入　→",width/8,height*5/8);
+
+  text("③ボタンを押して通話開始　→",width/8,height*13/16);
 }
