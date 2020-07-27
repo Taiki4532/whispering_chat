@@ -28,7 +28,7 @@ let constraints = {
   });
 
 function callOthers(){
-    const theirID = IDinput.value;
+    const theirID = IDinput.value();
     var options = { 'constraints' : {
       'mandatory' : {
       'offerToReceiveAudio' : true,
